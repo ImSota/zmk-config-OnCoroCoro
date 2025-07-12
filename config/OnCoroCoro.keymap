@@ -262,7 +262,7 @@
                 &mth LSHIFT ESC &kp Z       &kp X &kp C     &kp V     &kp B                                   &kp N &kp M &kp COMMA &kp DOT &kp SLASH &kp LGUI
                                                     &lth SYMBOL SPACE &lth NAVNUM BSPC  &mkp LCLK  &mkp MCLK  &mt LALT DEL &mt LSHFT RET
             >;
-            sensor-bindings = <&vol_alt_tab &mouse_scrl SCRL_DOWN SCRL_UP>;
+            sensor-bindings = <&mouse_scrl SCRL_DOWN SCRL_UP> // <&vol_alt_tab &mouse_scrl SCRL_DOWN SCRL_UP>;
         };
         symbol_layer {
             display-name = "Symbol";
@@ -290,7 +290,7 @@
                 &trans &trans &trans &trans &trans &trans               &trans &trans &trans &trans &trans  &trans
                                             &trans &trans &trans &trans &trans &trans
             >;
-            sensor-bindings = <&mouse_scrl SCRL_DOWN SCRL_UP &mouse_scrl SCRL_LEFT SCRL_RIGHT>;
+            sensor-bindings = <&mouse_scrl SCRL_DOWN SCRL_UP> // <&mouse_scrl SCRL_DOWN SCRL_UP &mouse_scrl SCRL_LEFT SCRL_RIGHT>;
         };
         device_layer {
             display-name = "Device";
