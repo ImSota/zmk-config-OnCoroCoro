@@ -202,12 +202,12 @@
     //     reg = <1>;
     //     spi-max-frequency = <2000000>;
     // };
-    // trackball_right: trackball_right@1 {
-    //     compatible = "pixart,pmw3610";
-    //     status = "disabled";
-    //     reg = <1>;
-    //     spi-max-frequency = <2000000>;
-    // };
+    trackball_right: trackball_right@1 {
+        compatible = "pixart,pmw3610";
+        status = "disabled";
+        reg = <1>;
+        spi-max-frequency = <2000000>;
+    };
 };
 
 &spi0 {
@@ -215,8 +215,8 @@
     pinctrl-0 = <&spi0_default>;
     pinctrl-1 = <&spi0_sleep>;
     pinctrl-names = "default", "sleep";
-    cs-gpios = <&gpio1 11 GPIO_ACTIVE_LOW>; // center trackball
-    // cs-gpios = <&gpio1 11 GPIO_ACTIVE_LOW>, <&gpio1 12 GPIO_ACTIVE_LOW>; // center+right trackball
+    // cs-gpios = <&gpio1 11 GPIO_ACTIVE_LOW>; // center trackball
+    cs-gpios = <&gpio1 11 GPIO_ACTIVE_LOW>, <&gpio1 12 GPIO_ACTIVE_LOW>; // center+right trackball
     // cs-gpios = <&gpio1 11 GPIO_ACTIVE_LOW>, <&gpio0 16 GPIO_ACTIVE_LOW>; // center+left trackball
 };
 
@@ -231,14 +231,14 @@
     force-awake;
 };
 
-// &trackball_right { // right trackball
-//     status = "okay";
-//     irq-gpios = <&gpio1 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-//     cpi = <800>;
-//     evt-type = <INPUT_EV_REL>;
-//     x-input-code = <INPUT_REL_X>;
-//     y-input-code = <INPUT_REL_Y>;
-// };
+&trackball_right { // right trackball
+    status = "okay";
+    irq-gpios = <&gpio1 10 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
+    cpi = <800>;
+    evt-type = <INPUT_EV_REL>;
+    x-input-code = <INPUT_REL_X>;
+    y-input-code = <INPUT_REL_Y>;
+};
 
 &encoder_right {
     status = "okay";
@@ -281,8 +281,8 @@
   };
 //   trackball_listener2: trackball_listner2 {
 //     compatible = "zmk,input-listener";
-//     device = <&trackball_left>;
-//     // device = <&trackball_right>;
+//     // device = <&trackball_left>;
+//     device = <&trackball_right>;
 
 //     scroll {
 //         layers = <DEFAULT>;
