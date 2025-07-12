@@ -240,9 +240,9 @@
     y-input-code = <INPUT_REL_Y>;
 };
 
-&encoder_right {
-    status = "okay";
-};
+// &encoder_right {
+//     status = "okay";
+// };
 
 // &trackball_left { // left trackball
 //     status = "okay";
