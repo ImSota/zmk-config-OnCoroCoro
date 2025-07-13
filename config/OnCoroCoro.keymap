@@ -8,13 +8,16 @@
 #include <dt-bindings/zmk/outputs.h>
 
 #include "keycode_japanese.h"
+#include <behaviors/naginata.dtsi>
 
 #define DEFAULT 0
-#define SYMBOL 1
-#define NAVNUM 2
-#define FCN 3
-#define DEVICE 4
-#define MOUSE 5
+#define NAGINATA 1
+#define SYMBOL 2
+#define NAVNUM 3
+#define FCN 4
+#define DEVICE 5
+#define MOUSE 6
+#define MOD 7
 
 #define CLICK_L 38
 #define CLICK_M 39
@@ -249,7 +252,92 @@
             tap-ms = <10>;
         };
     };
+};
+// ZaruBallより移植---------------------------------------------------------------------------------------
+/ {
+    behaviors {
+        // スクロール用のbehaviorの設定
+        scroll_down_up: behavior_sensor_rotate_mouse_wheel_down_up {
+            compatible = "zmk,behavior-sensor-rotate";
+            #sensor-binding-cells = <0>;
+            bindings = <&msc SCRL_DOWN>, <&msc SCRL_UP>;
+            tap-ms = <20>; // スクロールのタップ時間
+        };
 
+        // Customed Hold-Tap for SandS
+        // 他キーとの同時押しのみHold(Shift), 500m以上長押しすると、Tap(Space)のリピート
+        SandS: SandS {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-unless-interrupted";
+            tapping-term-ms = <500>; // tap-unless-interruptedのため意味は無いが、設定しないとエラーはく
+            quick-tap-ms = <500>;
+            bindings = <&kp>, <&kp>;
+
+            display-name = "SandS";
+        };
+
+        ht_BASE: ht_BASE {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "hold-preferred";
+            tapping-term-ms = <200>;
+            bindings = <&BL_mod>, <&kp>;
+
+            display-name = "ht-BL_mod";
+        };
+    };
+
+    macros {
+        BL_mod: BL_mod {
+            compatible = "zmk,behavior-macro-one-param";
+            #binding-cells = <1>;
+            bindings =
+                <&macro_press>,
+                <&mo MOD &macro_param_1to1>,
+                <&macro_press>,
+                <&kp MACRO_PLACEHOLDER>,
+                <&macro_pause_for_release>,
+                <&macro_param_1to1>,
+                <&macro_release>,
+                <&kp MACRO_PLACEHOLDER>,
+                <&macro_release>,
+                <&mo MOD>;
+        };
+
+        ng_on: ng_on {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp LANG1 &to NAGINATA>;
+        };
+    
+        ng_off: ng_off {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&macro_tap &kp LANG2 &to BASE>;
+        };
+    };
+
+    combos {
+        compatible = "zmk,combos";
+        combo_ng_on {
+            timeout-ms = <300>;
+            key-positions = <18 19>;
+            bindings = <&ng_on>;
+            layers = <DEFAULT NAGINATA>;
+        };
+
+        combo_ng_off {
+            timeout-ms = <300>;
+            key-positions = <16 17>;
+            bindings = <&ng_off>;
+            layers = <DEFAULT NAGINATA>;
+        };
+    };
+};
+
+// keymap----------------------------------------------------------------------------------------
+/ {
     keymap {
         compatible = "zmk,keymap";
         default_layer {
@@ -258,6 +346,16 @@
                 &lth FCN TAB    &kp Q  &kp W &kp E     &kp R     &kp T                                   &kp Y &kp U &kp I     &kp O   &kp P     &minuslayer NAVNUM 0
                 &mth LCTRL RET  &kp A  &kp S &kp D     &kp F     &kp G                                   &kp H &kp J &kp K     &kp L   &semi     &sqtmod LALT 0
                 &mth LSHIFT ESC &kp Z  &kp X &kp C     &kp V     &kp B                                   &kp N &kp M &kp COMMA &kp DOT &kp SLASH &kp LGUI
+                                             &lth SYMBOL SPACE &lth NAVNUM DEL   &mkp LCLK  &mkp MCLK  &mt LALT RET &mt LSHFT BSPC
+            >;
+            sensor-bindings = <&mouse_scrl SCRL_DOWN SCRL_UP>; // <&vol_alt_tab &mouse_scrl SCRL_DOWN SCRL_UP>;
+        };
+        naginata_layer {
+            display-name = "Naginata";
+            bindings = <
+                &lth FCN TAB    &ng Q  &ng W &ng E     &ng R     &ng T                                   &ng Y &ng U &ng I     &ng O   &ng P     &minuslayer NAVNUM 0
+                &BL_mod LCTRL   &ng A  &ng S &ng D     &ng F     &ng G                                   &ng H &ng J &ng K     &ng L   &ng SEMI     &sqtmod LALT 0
+                &mth LSHIFT ESC &ng Z  &ng X &ng C     &ng V     &ng B                                   &ng N &ng M &ng COMMA &ng DOT &ng SLASH &kp LGUI
                                              &lth SYMBOL SPACE &lth NAVNUM DEL   &mkp LCLK  &mkp MCLK  &mt LALT RET &mt LSHFT BSPC
             >;
             sensor-bindings = <&mouse_scrl SCRL_DOWN SCRL_UP>; // <&vol_alt_tab &mouse_scrl SCRL_DOWN SCRL_UP>;
@@ -279,7 +377,7 @@
             display-name = "Navigation/Number";
             bindings = <
                 &kp CAPSLOCK &kp N1    &kp N2    &kp N3    &kp N4     &kp N5                     &kp N6     &kp N7    &kp N8    &kp N9     &kp N0    &trans
-                &kp LCTRL    &kp LC(A) &kp LSHIFT &mkp MCLK &mkp LCLK &mkp RCLK                  &kp PG_UP  &kp HOME  &kp UP    &kp END    &kp BSPC  &kp DEL  
+                &kp LCTRL    &kp LC(A) &mkp RCLK &mkp MCLK &mkp LCLK &kp LSHIFT                  &kp PG_UP  &kp HOME  &kp UP    &kp END    &kp BSPC  &kp DEL  
                 &kp LSHIFT   &kp LC(Z) &kp LC(X) &kp LC(C) &kp LC(V)  &kp LC(Y)                  &kp PG_DN  &kp LEFT  &kp DOWN  &kp RIGHT  &trans    &kp PSCRN
                                                            &trans     &trans  &mkp MB4  &mkp MB5 &trans    &trans
             >;
@@ -313,5 +411,13 @@
                                                           &trans &trans &trans &trans &trans &trans
             >;
         };
+        mod_layer {
+            display-name = "Mod";
+            bindings = <
+                &trans &kp Q  &kp W &kp E     &kp R     &kp T                                   &kp Y &kp U &kp I     &kp O   &kp P     &kp EQUAL 
+                &trans &kp A  &kp S &kp D     &kp F     &kp G                                   &kp H &kp J &kp K     &kp L   &kp SEMI  &kp SQT
+                &trans &kp Z  &kp X &kp C     &kp V     &kp B                                   &kp N &kp M &kp COMMA &kp DOT &kp SLASH &kp LGUI
+                                                          &trans &trans &trans &trans &trans &trans
+            >;
     };
 };
