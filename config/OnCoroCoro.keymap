@@ -314,10 +314,9 @@
         ng_off: ng_off {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_tap &kp LANG2 &to BASE>;
+            bindings = <&macro_tap &kp LANG2 &to DEFAULT>;
         };
     };
-
     combos {
         compatible = "zmk,combos";
         combo_ng_on {
