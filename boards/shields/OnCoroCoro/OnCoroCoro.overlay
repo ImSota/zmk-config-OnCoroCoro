@@ -7,11 +7,13 @@
 
 // layers
 #define DEFAULT 0
-#define SYMBOL 1
-#define NAVNUM 2
-#define FCN 3
-#define DEVICE 4
-#define MOUSE 5
+#define NAGINATA 1
+#define SYMBOL 2
+#define NAVNUM 3
+#define FCN 4
+#define DEVICE 5
+#define MOUSE 6
+#define MOD 7
 
 / {
     chosen {
