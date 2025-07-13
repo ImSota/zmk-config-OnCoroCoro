@@ -418,5 +418,6 @@
                 &trans &kp Z  &kp X &kp C     &kp V     &kp B                                   &kp N &kp M &kp COMMA &kp DOT &kp SLASH &kp LGUI
                                                           &trans &trans &trans &trans &trans &trans
             >;
+        };
     };
 };
