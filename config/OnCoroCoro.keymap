@@ -248,7 +248,6 @@
             bindings = <&vol_alt_gui_n>, <&vol_alt_gui_p>;
             tap-ms = <10>;
         };
-
     };
 
     keymap {
@@ -271,10 +270,11 @@
                 &kp LSHIFT   &kp JP_PIPE  &trans        &trans          &kp JP_CARET &kp JP_AMPS               &kp LANG2    &kp JP_RBRC   &kp JP_LT     &kp JP_GT    &kp JP_QMARK &kp JP_BSLH
                                                                 &trans       &trans      &trans &trans &trans       &kp LS(RET)
             >;
+        };
             // ~  ! @ # $ %    \  ` * ( ) =
             // LC + - / * =    JP { [ ] : "
             // LS | x c ^ &    EN } < > ? \
-        };
+            
         navnum_layer {
             display-name = "Navigation/Number";
             bindings = <
