@@ -367,7 +367,7 @@
                 &kp LSHIFT   &kp JP_PIPE  &trans        &trans          &kp JP_CARET &kp JP_AMPS               &kp LANG2    &kp JP_RBRC   &kp JP_LT     &kp JP_GT    &kp JP_QMARK &kp JP_BSLH
                                                                 &trans       &trans      &trans &trans &trans       &kp DEL
             >;
-            sensor-bindings = <&vol_alt_tab>
+            sensor-bindings = <&vol_alt_tab>;
         };
             // ~  ! @ # $ %    \  ` * ( ) =
             // LC + - / * =    JP { [ ] : "
